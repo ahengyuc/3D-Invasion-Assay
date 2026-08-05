@@ -1,0 +1,30 @@
+import sys
+import numpy as np, pandas as pd
+
+# Drag a CSV/XLSX onto this file, or run it and pick from the dialog.
+path = sys.argv[1] if len(sys.argv) > 1 else None
+if not path:
+    from tkinter import Tk, filedialog
+    Tk().withdraw()
+    path = filedialog.askopenfilename(
+        title="Select ImageJ results file",
+        filetypes=[("Data", "*.csv *.xlsx *.xls"), ("All", "*.*")])
+if not path:
+    sys.exit()
+
+df = pd.read_excel(path) if path.lower().endswith((".xlsx", ".xls")) \
+     else pd.read_csv(path)
+
+print(f"\n{path}  ({len(df)} rows)")
+
+X, Y = 525.892856945, 966.191381206
+
+d = np.hypot(df["X"] - X, df["Y"] - Y)
+
+print(f"\nn cells:            {len(d)}")
+print(f"Maximum distance:   {d.max():.4f}")
+print(f"Mean distance:      {d.mean():.4f}")
+print(f"Minimum distance:   {d.min():.4f}")
+print(f"Standard deviation: {d.std(ddof=1):.4f}")
+
+input("\nPress Enter to close.")

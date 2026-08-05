@@ -1,0 +1,13 @@
+run("Duplicate...", " ");
+setOption("ScaleConversions", true);
+run("8-bit");
+run("Despeckle");
+setAutoThreshold("Default dark");
+run("Threshold...");
+setThreshold(0, 105);
+setOption("BlackBackground", true);
+run("Convert to Mask");
+run("Close");
+run("Fill Holes");
+run("Watershed");
+run("Analyze Particles...", "size=200-1500 circularity=0.25-1.00 show=[Overlay Masks] display");
